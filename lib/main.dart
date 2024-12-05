@@ -40,10 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
-        title: const Text('Home Screen '),
-      ),
       body: IndexedStack(
         index: _selectedIndex,
         children: _pages,
@@ -65,46 +61,83 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final DateTime _birthDate =
+      DateTime(2005, 4, 1); // Tanggal lahir yang sudah diatur
+  String _birthdayMessage = ''; // Variabel untuk menyimpan hasil perhitungan
+
+  void _calculateDaysUntilBirthday() {
+    final now = DateTime.now();
+    DateTime nextBirthday = DateTime(
+      now.year,
+      _birthDate.month,
+      _birthDate.day,
+    );
+
+    if (nextBirthday.isBefore(now)) {
+      nextBirthday = DateTime(
+        now.year + 1,
+        _birthDate.month,
+        _birthDate.day,
+      );
+    }
+
+    final daysUntilBirthday = nextBirthday.difference(now).inDays;
+
+    setState(() {
+      _birthdayMessage = 'Ulang tahunmu lagi $daysUntilBirthday hari lagi!';
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              // Example action
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Welcome'),
-                  content: const Text('You are on the Home Page'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Close'),
-                    ),
-                  ],
-                ),
-              );
-            },
-            child: const Text('Welcome to the Home Page'),
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image:
+                AssetImage('images/bg.jpeg'), // Ganti dengan path gambar Anda
+            fit: BoxFit.cover, // Menyesuaikan gambar ke layar
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              // Navigate to FirstScreen
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const FirstScreen()),
-              );
-            },
-            child: const Text('Go to First Screen'),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Welcome to the Home Page',
+                style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  _calculateDaysUntilBirthday(); // Hitung hari ulang tahun sebelum navigasi
+
+                  // Navigate to FirstScreen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FirstScreen(
+                              birthdayMessage: _birthdayMessage,
+                            )),
+                    // Pass pesan ulang tahun
+                  );
+                },
+                child: const Text('Go to First Screen'),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
