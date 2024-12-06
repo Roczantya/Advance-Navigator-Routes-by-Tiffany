@@ -34,11 +34,8 @@ Sebelum memulai, pastikan Anda telah memenuhi persyaratan berikut:
      - Layar default saat aplikasi dibuka.
      - Terdapat tombol untuk menuju First Screen atau membuka dialog.
   2. Bottom Navigation Bar
-     - Gunakan ikon di bagian bawah layar untuk berpindah antar layar: Home, Search, Settings dan Profile.
-  3. Drawer Menu
-     - Akses menu dengan mengetuk ikon hamburger di kiri atas AppBar.
-     - Pilih salah satu menu untuk menuju layar yang diinginkan.
-  4. Tombol Kembali di AppBar
+     - Gunakan ikon di bagian bawah layar untuk berpindah antar layar: Home, Search, Settings dan Profile. dlam hal ini sebagai pengganti 
+  3. Tombol Kembali di AppBar
      - Pada layar Third Screen, tombol ini akan membawa Anda kembali ke First Screen.
 
 
