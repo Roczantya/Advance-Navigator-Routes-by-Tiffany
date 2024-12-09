@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'second_screen.dart';
 import 'first_screen.dart';
 
 void main() => runApp(MyApp());
@@ -6,9 +7,23 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Navigation Codelab',
-      home: HomeScreen(),
+      initialRoute: '/',
+      onGenerateRoute: (settings) {
+        if (settings.name == '/') {
+          return MaterialPageRoute(builder: (context) => const HomeScreen());
+        } else if (settings.name == '/biodata') {
+          final args = settings.arguments as Map;
+          return MaterialPageRoute(
+            builder: (context) =>
+                FirstScreen(birthdayMessage: args['birthdayMessage']),
+          );
+        } else if (settings.name == '/inputbox') {
+          return MaterialPageRoute(builder: (context) => SecondScreen());
+        }
+        return null;
+      },
     );
   }
 }
@@ -17,7 +32,7 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -79,7 +94,7 @@ class _HomePageState extends State<HomePage> {
       now.year,
       _birthDate.month,
       _birthDate.day,
-    );
+    ).toLocal();
 
     if (nextBirthday.isBefore(now)) {
       nextBirthday = DateTime(
@@ -100,7 +115,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image:
                 AssetImage('images/bg.jpeg'), // Ganti dengan path gambar Anda
@@ -124,13 +139,10 @@ class _HomePageState extends State<HomePage> {
                   _calculateDaysUntilBirthday(); // Hitung hari ulang tahun sebelum navigasi
 
                   // Navigate to FirstScreen
-                  Navigator.push(
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => FirstScreen(
-                              birthdayMessage: _birthdayMessage,
-                            )),
-                    // Pass pesan ulang tahun
+                    '/biodata',
+                    arguments: {'birthdayMessage': _birthdayMessage},
                   );
                 },
                 child: const Text('Go to First Screen'),

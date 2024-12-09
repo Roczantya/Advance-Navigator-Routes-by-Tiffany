@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'second_screen.dart';
 
 class FirstScreen extends StatefulWidget {
   final String birthdayMessage;
@@ -85,10 +84,7 @@ class _FirstScreenState extends State<FirstScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   // Navigate to the next screen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SecondScreen()),
-                  );
+                  Navigator.pushNamed(context, '/inputbox');
                 },
                 child: const Text('Go to next Screen'),
               ),
