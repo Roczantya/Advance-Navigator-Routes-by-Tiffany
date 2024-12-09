@@ -26,11 +26,7 @@ class _SecondScreenState extends State<SecondScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ScreenPage(
-              screenIndex: _screenCount -
-                  1, // Mulai dari layar yang sesuai dengan jumlah input
-              maxScreens: _screenCount,
-            ),
+            builder: (context) => ScreenListPage(maxScreens: _screenCount),
           ),
         );
       }
@@ -46,7 +42,7 @@ class _SecondScreenState extends State<SecondScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: const Text('Build`s Screen'),
+        title: const Text('Generated Screen'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -64,7 +60,7 @@ class _SecondScreenState extends State<SecondScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _createScreens,
-              child: Text('Buat Layar'),
+              child: const Text('Buat Layar'),
             ),
           ],
         ),
@@ -73,7 +69,40 @@ class _SecondScreenState extends State<SecondScreen> {
   }
 }
 
-class ScreenPage extends StatefulWidget {
+class ScreenListPage extends StatelessWidget {
+  final int maxScreens;
+
+  const ScreenListPage({super.key, required this.maxScreens});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Daftar Layar'),
+      ),
+      body: ListView.builder(
+        itemCount: maxScreens,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text('Layar ke-${index + 1}'),
+            trailing: const Icon(Icons.arrow_forward),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ScreenPage(screenIndex: index, maxScreens: maxScreens),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class ScreenPage extends StatelessWidget {
   final int screenIndex;
   final int maxScreens;
 
@@ -81,73 +110,38 @@ class ScreenPage extends StatefulWidget {
       {super.key, required this.screenIndex, required this.maxScreens});
 
   @override
-  State<ScreenPage> createState() => _ScreenPageState();
-}
-
-class _ScreenPageState extends State<ScreenPage> {
-  late int _screenIndex;
-  late int _maxScreens;
-
-  @override
-  void initState() {
-    super.initState();
-    _screenIndex = widget.screenIndex;
-    _maxScreens = widget.maxScreens;
-  }
-
-  // Menambah layar baru
-  void _createNewScreen() {
-    setState(() {
-      _maxScreens += 1;
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ScreenPage(
-          screenIndex: _screenIndex + 1,
-          maxScreens: _maxScreens,
-        ),
-      ),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Screen ${_screenIndex + 1}'), // Menampilkan nomor layar
-        actions: [
-          IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              if (_screenIndex > 0) {
-                Navigator.pop(context); // Kembali ke layar sebelumnya
-              }
-            },
-          ),
-        ],
+        title: Text('Screen ${screenIndex + 1}'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Ini adalah layar ke-${_screenIndex + 1}'),
+            Text('Ini adalah layar ke-${screenIndex + 1}'),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed:
-                  _screenIndex == _maxScreens - 1 ? _createNewScreen : null,
-              child: Text(_screenIndex == _maxScreens - 1
-                  ? 'Buat Layar Baru'
-                  : 'Maksimal Layar'),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
+            if (screenIndex < maxScreens - 1)
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ScreenPage(
+                        screenIndex: screenIndex + 1,
+                        maxScreens: maxScreens,
+                      ),
+                    ),
+                  );
+                },
+                child: const Text('Layar Berikutnya'),
+              ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context); // Kembali ke layar sebelumnya
               },
-              child: Text('Kembali'),
+              child: const Text('Kembali'),
             ),
           ],
         ),

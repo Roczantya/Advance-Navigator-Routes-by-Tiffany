@@ -41,9 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // List of pages for Bottom Navigation Bar
   final List<Widget> _pages = [
     const HomePage(),
-    const SearchScreen(),
-    const ProfileScreen(),
-    const SettingsScreen(),
+    SecondScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -66,10 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Settings'),
+              icon: Icon(Icons.list), label: 'Generated Screen'),
         ],
       ),
     );
