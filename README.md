@@ -1,5 +1,5 @@
 # Advance Routes-Navigator App
-  Aplikasi Flutter sederhana untuk navigasi antar layar dengan fitur UI kustom, termasuk bottom navigation bar, drawer, dan rute-rute yang mudah digunakan.
+  Aplikasi Flutter sederhana untuk navigasi antar layar dengan fitur UI kustom, termasuk bottom navigation bar, dan rute-rute yang mudah digunakan.
 
 ## Fitur
 - `Bottom Navigation Bar` untuk navigasi antar layar (Home, Generated screen).
