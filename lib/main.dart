@@ -82,7 +82,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final DateTime _birthDate =
       DateTime(2005, 4, 1); // Tanggal lahir yang sudah diatur
-  String _birthdayMessage = ''; // Variabel untuk menyimpan hasil perhitungan
+  String _birthdayMessage = '';
+  Color _buttonColor = Colors.grey; // Warna default tombol
+// Variabel untuk menyimpan hasil perhitungan
 
   void _calculateDaysUntilBirthday() {
     final now = DateTime.now();
@@ -125,76 +127,63 @@ class _HomePageState extends State<HomePage> {
               const Text(
                 'Welcome to the Home Page',
                 style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 20,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _calculateDaysUntilBirthday(); // Hitung hari ulang tahun sebelum navigasi
-
-                  // Navigate to FirstScreen
-                  Navigator.pushNamed(
-                    context,
-                    '/biodata',
-                    arguments: {'birthdayMessage': _birthdayMessage},
-                  );
+              MouseRegion(
+                onEnter: (_) {
+                  // Ubah warna tombol saat di-hover
+                  setState(() {
+                    _buttonColor = const Color.fromARGB(255, 205, 4, 240);
+                  });
                 },
-                child: const Text('Go to First Screen'),
+                onExit: (_) {
+                  // Kembalikan warna tombol saat keluar dari hover
+                  setState(() {
+                    _buttonColor = Colors.blue;
+                  });
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  decoration: BoxDecoration(
+                    color: _buttonColor,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        offset: Offset(0, 4),
+                        blurRadius: 8,
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 20,
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      _calculateDaysUntilBirthday();
+                      Navigator.pushNamed(
+                        context,
+                        '/biodata',
+                        arguments: {'birthdayMessage': _birthdayMessage},
+                      );
+                    },
+                    child: const Text(
+                      'Go to First Screen',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search Screen'),
-      ),
-      body: const Center(
-        child: Text('This is the Search Page', style: TextStyle(fontSize: 20)),
-      ),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile Screen'),
-      ),
-      body: const Center(
-        child: Text('This is the Profile Page', style: TextStyle(fontSize: 20)),
-      ),
-    );
-  }
-}
-
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings Screen'),
-      ),
-      body: const Center(
-        child:
-            Text('This is the Settings Page', style: TextStyle(fontSize: 20)),
       ),
     );
   }

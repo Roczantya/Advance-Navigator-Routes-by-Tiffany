@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'second_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FirstScreen extends StatefulWidget {
   final String birthdayMessage;
@@ -17,44 +18,46 @@ class _FirstScreenState extends State<FirstScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
-        title: const Text('Biodata'),
+        title: Text(
+          'Biodata',
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            // Judul Biodata
+            Text(
               'Biodata Saya:',
-              style: TextStyle(fontSize: 24),
+              style: GoogleFonts.oswald(
+                fontSize: 24,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'Nama: Tiffany',
-              style: TextStyle(fontSize: 18),
-            ),
-            const Text(
-              'Umur: 19 Tahun',
-              style: TextStyle(fontSize: 18),
-            ),
-            const Text(
-              'Tanggal Lahir: 1 April 2005',
-              style: TextStyle(fontSize: 18),
-            ),
-            const Text(
-              'Jurusan: IMT',
-              style: TextStyle(fontSize: 18),
-            ),
+            const SizedBox(height: 20),
+
+            // Informasi Biodata
+            _buildBiodataRow('Nama', 'Tiffany'),
+            _buildBiodataRow('Umur', '19 Tahun'),
+            _buildBiodataRow('Tanggal Lahir', '1 April 2005'),
+            _buildBiodataRow('Jurusan', 'IMT'),
 
             const SizedBox(height: 20),
+
+            // Menampilkan Pesan Ulang Tahun
             Text(
-              widget
-                  .birthdayMessage, // Menampilkan pesan ulang tahun yang diteruskan
+              widget.birthdayMessage, // Menampilkan pesan ulang tahun
               style: const TextStyle(fontSize: 18, color: Colors.lightGreen),
             ),
             const SizedBox(height: 40),
+
+            // Tombol Ucapkan Selamat Ulang Tahun
             SizedBox(
-              width: double.infinity, // Make button as wide as possible
+              width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   setState(() {
@@ -66,22 +69,31 @@ class _FirstScreenState extends State<FirstScreen> {
                   backgroundColor: MaterialStateProperty.resolveWith<Color>(
                     (states) {
                       if (_isButtonPressed) {
-                        return Colors
-                            .lightBlueAccent; // Button color after being pressed
+                        return Colors.lightBlueAccent; // Color after pressed
                       }
-                      return Colors.white; // Default button color
+                      return Colors.white; // Default color
                     },
                   ),
+                  padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(vertical: 16)),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
-                child: const Text('Ucapkan Selamat Ulang Tahun'),
+                child: const Text(
+                  'Ucapkan Selamat Ulang Tahun',
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
             ),
 
-            const SizedBox(height: 20), // Space between the two buttons
+            const SizedBox(height: 20), // Space between the buttons
 
-            // Centered button - Go to Next Screen
+            // Tombol Go to Next Screen
             SizedBox(
-              width: double.infinity, // Make button as wide as possible
+              width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   // Navigate to the next screen
@@ -90,7 +102,19 @@ class _FirstScreenState extends State<FirstScreen> {
                     MaterialPageRoute(builder: (context) => SecondScreen()),
                   );
                 },
-                child: const Text('Go to next Screen'),
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(vertical: 16)),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                child: const Text(
+                  'Go to Next Screen',
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
             ),
           ],
@@ -99,6 +123,31 @@ class _FirstScreenState extends State<FirstScreen> {
     );
   }
 
+  // Widget untuk menampilkan setiap baris biodata
+  Widget _buildBiodataRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Text(
+            '$label: ',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 18,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Dialog untuk menampilkan pesan ulang tahun
   void _showBirthdayDialog(BuildContext context) {
     showDialog(
       context: context,
